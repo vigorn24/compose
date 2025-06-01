@@ -1,0 +1,59 @@
+services:
+  postgres:
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "5"
+    hostname: postgres
+    restart: always
+    stop_grace_period: 1m
+#    command: ["postgres", "-c", "config_file=/var/lib/postgresql/conf/postgresql.conf"]
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: secret
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+#      - ./configs/postgres/postgresql.conf:/var/lib/postgresql/conf/postgresql.conf
+      - ./data/:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - compose
+
+#  exporter:
+#    logging:
+#      options:
+#        max-size: "10m"
+#        max-file: "5"
+#    hostname: postgres-exporter
+#    restart: always
+#    stop_grace_period: 1m
+#    image: postgres-exporter:v0.10.1
+#    ports:
+#      - "9187:9187"
+#    enviroment:
+#		DATA_SOURCE_NAME="postgresql://postgres:secret@postgres:5432/postgres?sslmode=disable"
+#    networks:
+#      - compose
+
+  pgadmin:
+    image: dpage/pgadmin4:7.6
+    container_name: pgadmin
+    ports:
+     - "8083:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: SuperSecret
+    volumes:
+     - ./pgadmin:/var/lib/pgadmin
+    networks:
+     - compose
+
+networks:
+  compose:
+

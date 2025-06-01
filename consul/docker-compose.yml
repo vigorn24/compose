@@ -1,0 +1,14 @@
+services:
+  consul:
+    image: consul:1.15
+    container_name: consul
+    command: agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+    restart: unless-stopped
+    volumes:
+      - consul_data:/consul/data
+
+volumes:
+  consul_data:

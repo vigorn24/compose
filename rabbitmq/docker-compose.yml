@@ -1,0 +1,26 @@
+services:
+  rabbitmq:
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "5"
+    hostname: rabbitmq
+    restart: always
+    stop_grace_period: 1m
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - ./data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 30s
+      timeout: 30s
+      retries: 6
+    networks:
+      - compose
+
+networks:
+  compose:
+    driver: bridge

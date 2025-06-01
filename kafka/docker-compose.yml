@@ -1,0 +1,78 @@
+services:
+  kafka:
+    image: apache/kafka:latest
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "5"
+    hostname: kafka
+    restart: always
+    stop_grace_period: 1m
+    container_name: kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://192.168.1.11:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_NUM_PARTITIONS: 1
+      KAFKA_LOG_DIRS: '/tmp/kafka-logs'
+      KAFKA_JMX_PORT: 9997
+    ports:  
+      - "9092:9092"
+      - "9997:9997"
+    volumes:
+      - ./data:/tmp/kafka-logs
+    networks:
+      - compose    
+
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 8082:8080
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      SERVER_SERVLET_CONTEXT_PATH: /kafka-ui
+    depends_on:
+      - kafka
+    networks:
+      - compose
+
+# for monitorings, it's nessisary to solve errors
+#   kafka-exporter:
+#    image: danielqsj/kafka-exporter 
+#    command: ["--kafka.server=kafka:9092"]
+#    ports:
+#      - 9308:9308     
+#    depends_on:
+#      - kafka
+#    networks:
+#      - compose
+
+  kafka-init-topics:
+    image: apache/kafka:latest
+    volumes:
+       - ./message.json:/data/message.json
+    depends_on:
+      - kafka
+    command: "bash -c 'echo Waiting for Kafka to be ready... && \
+               sleep 15 && \
+               /opt/kafka/bin/kafka-topics.sh --create --topic second --if-not-exists --bootstrap-server kafka:9092 && \
+               /opt/kafka/bin/kafka-topics.sh --create --topic first --partitions 2 --if-not-exists --bootstrap-server kafka:9092 && \
+               /opt/kafka/bin/kafka-console-producer.sh --bootstrap-server kafka:9092 --topic second  < /data/message.json'"
+    networks:
+      - compose
+
+
+networks:
+  compose:
+    driver: bridge
