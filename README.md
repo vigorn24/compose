@@ -1,26 +1,28 @@
-Подборка docker-compose следующих сервисов
-- postgres
-- rabbitmq
-- kafka
-- consul
-- elk
-- minios3
-- mongodb
-- redis
-- vmetrics
-- nginx
+Подборка docker-compose следующих сервисов:
+- postgres -  СУБД PostgreSQL
+- rabbitmq - система очередей RabbitMQ
+- kafka  - топики Kafka
+- consul - хранение конфигурации приложений и Service Discovery 
+- elk - обработка, хранение и просмотр логов на базе Opensearch
+- minios3 - объектное  хранилище S3 
+- mongodb - NonSQL СУБД MongoDB
+- redis - кэш Redis
+- vmetrics - сервис мониторинга VictoriaMetrics и Графина для просмотра 
+- nginx - сервис NGINX для проксирования запросов и выдачи статики
+
+Описание подключения приложений к сервису см. в <service_dir>/Readme.md
 
 # Запуск сервиса
 1) Клонировать репу
-git clone ..
+git clone https://github.com/vigorn24/compose.git
 
 2) перейти в нужную директорию
 cd compose/<dir>
 
-3) запуск сервиса
+3) запустить сервис
 docker-comopse up -d 
 
-ключ
+ключ:
 -d - запустить в фоне
 
 # Остановка сервиса (предварително перейти в директорию с сервисом compose/<dir>)
@@ -30,7 +32,7 @@ docker-comopse down
 docker-compose logs <service-name>
 
 
-Если хотите контролировать расположеие данных, внесите изменения в конфигурцию docker. Для linux обычно файл конфигурации - /etc/docker/daemon.json
+Если хотите контролировать расположение данных, внесите изменения в конфигурацию docker. Для linux обычно файл конфигурации - /etc/docker/daemon.json
 {
   "data-root": "/opt/docker",
   "log-opts": {

@@ -6,8 +6,16 @@ services:
       MINIO_ROOT_USER: ROOTUSER
       MINIO_ROOT_PASSWORD: CHANGEME123
     volumes:
-      - ./data:/data
+      - minios3_data:/data
     ports:
       - 9000:9000
       - 9001:9001
     command: server /data --console-address ":9001"
+    networks:
+      - compose
+
+volumes:
+  minios3_data: {}
+
+networks:
+  compose: { }

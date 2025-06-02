@@ -9,6 +9,11 @@ services:
     restart: unless-stopped
     volumes:
       - consul_data:/consul/data
+    networks:
+      - compose
 
 volumes:
-  consul_data:
+  consul_data: {}
+
+networks:
+  compose: {}

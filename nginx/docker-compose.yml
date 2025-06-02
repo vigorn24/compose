@@ -13,7 +13,10 @@ services:
     command: [nginx-debug, '-g', 'daemon off;']
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./static/:/var/www/static/:ro
       - ./conf.d:/etc/nginx/conf.d
+    networks:
+      - compose
 
 networks:
-  compose:
+  compose: {}

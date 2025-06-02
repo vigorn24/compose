@@ -28,7 +28,7 @@ services:
       - "9092:9092"
       - "9997:9997"
     volumes:
-      - ./data:/tmp/kafka-logs
+      - kafka_data:/tmp/kafka-logs
     networks:
       - compose    
 
@@ -73,6 +73,8 @@ services:
       - compose
 
 
+volumes:
+  kafka_data: {}
+
 networks:
-  compose:
-    driver: bridge
+  compose: {}

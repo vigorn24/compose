@@ -11,7 +11,7 @@ services:
     ports:
       - 6379:6379/tcp
     volumes:
-      - ./data:/data
+      - redis_data:/data
     healthcheck:
         test: ["CMD", "redis-cli","ping"]
         interval: 20s
@@ -38,7 +38,9 @@ services:
 #    networks:
 #      - compose
 
+volumes:
+  redis_data: {}
+
 networks:
-  compose:
-    driver: bridge
+  compose: {}
 

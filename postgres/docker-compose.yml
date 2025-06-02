@@ -16,7 +16,7 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
 #      - ./configs/postgres/postgresql.conf:/var/lib/postgresql/conf/postgresql.conf
-      - ./data/:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -50,10 +50,15 @@ services:
       PGADMIN_DEFAULT_EMAIL: user@domain.com
       PGADMIN_DEFAULT_PASSWORD: SuperSecret
     volumes:
-     - ./pgadmin:/var/lib/pgadmin
+     - pgadmin_data:/var/lib/pgadmin
     networks:
      - compose
 
+
+volumes:
+  postgres_data: {}
+  pgadmin_data: {}
+
 networks:
-  compose:
+  compose: {}
 

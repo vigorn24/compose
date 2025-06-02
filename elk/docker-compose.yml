@@ -46,6 +46,7 @@ services:
       - opensearch-data2:/usr/share/opensearch/data
     networks:
       - opensearch-net
+
   opensearch-dashboards:
     image: opensearchproject/opensearch-dashboards:latest # Make sure the version of opensearch-dashboards matches the version of opensearch installed on other nodes
     container_name: opensearch-dashboards
@@ -56,11 +57,11 @@ services:
     environment:
       OPENSEARCH_HOSTS: '["https://opensearch-node1:9200","https://opensearch-node2:9200"]' # Define the OpenSearch nodes that OpenSearch Dashboards will query
     networks:
-      - opensearch-net
+      - compose
 
 volumes:
-  opensearch-data1:
-  opensearch-data2:
+  opensearch-data1: {}
+  opensearch-data2: {}
 
 networks:
-  opensearch-net:
+  compose: {}
