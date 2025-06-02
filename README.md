@@ -12,27 +12,34 @@
 
 Описание подключения приложений к сервису см. в <service_dir>/Readme.md
 
-# Запуск сервиса
+## Запуск сервиса
 1) Клонировать репу
-git clone https://github.com/vigorn24/compose.git
+> git clone https://github.com/vigorn24/compose.git
 
-2) перейти в нужную директорию
-cd compose/<dir>
 
-3) запустить сервис
-docker-comopse up -d 
+2) Создать сеть (чтобы использовать единую сеть для всех контейнеров)
+> docker network create compose
 
-ключ:
+3) перейти в нужную директорию
+> `cd compose/<servoce-dir>`
+
+4) запустить сервис
+> docker-compose up -d 
+
+где ключ:
 -d - запустить в фоне
 
-# Остановка сервиса (предварително перейти в директорию с сервисом compose/<dir>)
-docker-comopse down
+## Остановка сервиса 
+Предварително перейти в директорию с сервисом compose/<dir>
+> docker-compose down
 
-# просмотр логов (предварително перейти в директорию с сервисом compose/<dir>)
-docker-compose logs <service-name>
 
+## Просмотр логов 
+Предварително перейти в директорию с сервисом compose/<dir>
+> docker-compose logs <service-name>
 
 Если хотите контролировать расположение данных, внесите изменения в конфигурацию docker. Для linux обычно файл конфигурации - /etc/docker/daemon.json
+```json
 {
   "data-root": "/opt/docker",
   "log-opts": {
@@ -40,6 +47,7 @@ docker-compose logs <service-name>
     "max-file": "2"  
   }
 }
+```
 где:
 - data-root - корневой каталог, где Docker хранит все свои данные (образы, контейнеры, тома, сети и другие данные). Значение по умолчанию: /var/lib/docker
 - max-size - Ограничивает максимальный размер одного лог-файла контейнера до 500 мегабайт. Когда лог достигает этого размера, Docker ротирует его (создаёт новый файл)

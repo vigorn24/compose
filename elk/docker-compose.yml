@@ -23,7 +23,8 @@ services:
       - 9200:9200 # REST API
       - 9600:9600 # Performance Analyzer
     networks:
-      - opensearch-net # All of the containers will join the same Docker bridge network
+      - compose # All of the containers will join the same Docker bridge network
+
   opensearch-node2:
     image: opensearchproject/opensearch:latest # This should be the same image used for opensearch-node1 to avoid issues
     container_name: opensearch-node2
@@ -45,7 +46,7 @@ services:
     volumes:
       - opensearch-data2:/usr/share/opensearch/data
     networks:
-      - opensearch-net
+      - compose
 
   opensearch-dashboards:
     image: opensearchproject/opensearch-dashboards:latest # Make sure the version of opensearch-dashboards matches the version of opensearch installed on other nodes
@@ -64,4 +65,5 @@ volumes:
   opensearch-data2: {}
 
 networks:
-  compose: {}
+  compose:
+    external: true  # Using the existing network, not create a new one.

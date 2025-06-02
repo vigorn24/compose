@@ -18,4 +18,5 @@ volumes:
   minios3_data: {}
 
 networks:
-  compose: { }
+  compose:
+    external: true  # Using the existing network, not create a new one.

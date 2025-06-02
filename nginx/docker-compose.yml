@@ -19,4 +19,5 @@ services:
       - compose
 
 networks:
-  compose: {}
+  compose:
+    external: true  # Using the existing network, not create a new one.
