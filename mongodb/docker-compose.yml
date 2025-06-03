@@ -1,14 +1,9 @@
 services:
   mongodb:
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "5"
+    image: mongo:4.4
     hostname: mongodb
     container_name: mongodb
     restart: always
-    stop_grace_period: 1m
-    image: mongo:latest
     ports:
       - 27017:27017/tcp
     environment:
@@ -16,11 +11,19 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: secret
     volumes:
       - mongodb_data:/data/db/
-    healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
-      interval: 20s
-      timeout: 20s
-      retries: 6
+    networks:
+      - compose
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://mongoadmin:secret@mongodb:27017/
+      ME_CONFIG_BASICAUTH: 1
     networks:
       - compose
 
@@ -38,25 +41,6 @@ services:
 #      - "9216:9216"
 #    enviroment:
 #      MONGODB_URI: mongodb://mongoadmin:secret@mongodb:27017
-#    networks:
-#      - compose
-
-#  mongo-express:
-#    image: mongo-express
-#    container_name: mongo-express
-#    restart: always
-#    ports:
-#      - "28081:8081"
-#    environment:
-#      ME_CONFIG_MONGODB_SERVER: mongodb
-#      ME_CONFIG_BASICAUTH_USERNAME: admin
-#      ME_CONFIG_BASICAUTH_PASSWORD: changeme
-#      #ME_CONFIG_MONGODB_AUTH_DATABASE: admin
-#      ME_CONFIG_MONGODB_ADMINUSERNAME: mongoadmin
-#      ME_CONFIG_MONGODB_ADMINPASSWORD: secret
-#      ME_CONFIG_MONGODB_URL: mongo://mongoadmin:secret@mongodb:27017/ 
-#    depends_on:
-#      - mongodb
 #    networks:
 #      - compose
 

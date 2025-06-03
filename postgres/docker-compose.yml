@@ -9,6 +9,7 @@ services:
     stop_grace_period: 1m
 #    command: ["postgres", "-c", "config_file=/var/lib/postgresql/conf/postgresql.conf"]
     image: postgres
+    container_name: postgres
     ports:
       - "5432:5432"
     environment:

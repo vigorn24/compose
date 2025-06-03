@@ -1,5 +1,5 @@
+- grafana Web UI: http://<IP>:3000, пароль первого входа admin \ admin
 - vmagent Web UI -  http://<IP>:8429
 - victoriametrics HTTP API: http://<IP>:8428
-- grafana Web UI: http://<IP>:3000
 - vmalert Web UI: http://<IP>:8880
 - alertmanager Web UI: http://<IP>:9093

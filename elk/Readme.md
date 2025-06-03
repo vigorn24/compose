@@ -1,4 +1,4 @@
-- opensearch-dashboards UI (Kibana) - http://<IP>:5600
+- opensearch-dashboards UI (Kibana) - http://<IP>:5601 , сredentials: admin / h!GFx6gWm8LYTRaQUv-
 
 - REST API: https://<IP>:9200, сredentials: admin / h!GFx6gWm8LYTRaQUv-
 
@@ -6,7 +6,7 @@
 # примеры программного взаимодействия с сервисом
 - Пример просмотра списка индексов через curl
 ```shell
-curl -XGET -k -u 'admin:h!GFx6gWm8LYTRaQUv-' 'https://localhost:9200/_cat/indices?v'
+curl -XGET -k -u 'admin:h!GFx6gWm8LYTRaQUv-' 'http:9200/_cat/indices?v'
 ```
 
 - создание индекса, код на python

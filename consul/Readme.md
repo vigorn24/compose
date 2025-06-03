@@ -12,5 +12,5 @@ curl \
 
 - Читаем значение ключа 
 ```shell
-curl http://localhost:8500/v1/kv/my-app/config/api-key?raw
+curl http://<IP>>:8500/v1/kv/my-app/config/api-key?raw
 ```
